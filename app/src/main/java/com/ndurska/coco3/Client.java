@@ -16,7 +16,7 @@ public class Client implements Serializable {
         this.name = name;
         this.adjective = adjective;
         this.breed = breed;
-        this.ownerId = ownerId;;
+        this.ownerId = ownerId;
     }
 
     public Client(String name) {
