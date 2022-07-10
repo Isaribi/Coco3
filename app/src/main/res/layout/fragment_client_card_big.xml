@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_coco_4"
+    android:backgroundTint="@color/color_coco_4"
+    tools:context=".ClientCardBig">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="156dp"
+        android:layout_height="188dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="38dp"
+        android:layout_marginTop="42dp"
+        android:background="#FFFFFF"
+        tools:src="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tvClientName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="75dp"
+        android:layout_toEndOf="@+id/imageView"
+        android:minWidth="15dp"
+        android:minHeight="40dp"
+        android:text="Name"
+        android:textSize="34sp" />
+
+    <TextView
+        android:id="@+id/tvClientAdjective"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="75dp"
+        android:layout_toEndOf="@+id/tvClientName"
+        android:minWidth="100dp"
+        android:minHeight="40dp"
+        android:textSize="34sp"
+        android:text="Adjective" />
+
+    <TextView
+        android:id="@+id/tvClientBreed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvClientName"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="23dp"
+        android:layout_toEndOf="@+id/imageView"
+        android:minWidth="100dp"
+        android:minHeight="40dp"
+        android:textSize="34sp"
+        android:text="Breed" />
+
+    <TextView
+        android:id="@+id/labelOwner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvClientBreed"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="22dp"
+        android:layout_toEndOf="@+id/imageView"
+        android:minWidth="100dp"
+        android:minHeight="40dp"
+        android:textSize="34sp"
+        android:text="Właściciel:" />
+
+    <TextView
+        android:id="@+id/tvClientOwnerID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvClientBreed"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="22dp"
+        android:layout_toEndOf="@+id/labelOwner"
+        android:minWidth="100dp"
+        android:minHeight="40dp"
+        android:textSize="34sp"
+        android:text="OwnerID" />
+
+    <Button
+        android:id="@+id/btnClientEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="23dp"
+        android:layout_marginBottom="28dp"
+        android:text="Edytuj" />
+
+</RelativeLayout>
