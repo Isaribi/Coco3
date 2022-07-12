@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private int activeClientPosition;
 
 
-
+/////////////AAAAAAAAAAAAAA
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
