@@ -1,5 +1,6 @@
 package com.ndurska.coco3;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -37,7 +38,7 @@ public class ClientCardEdit extends Fragment {
     private int ownerID;
     DataBaseHelper dataBaseHelper;
     MainActivity activity;
-    Fragment me;
+
 
     //references to elements
     TextView etClientName;
@@ -46,6 +47,14 @@ public class ClientCardEdit extends Fragment {
     TextView etClientOwnerID;
     Button btnSaveChanges;
     Button btnDeleteClient;
+
+    private ClientCardEditListener listener;
+
+    interface ClientCardEditListener {
+
+        public void onBtnSaveClicked();
+        public void onBtnDeleteClicked();
+    }
 
     public ClientCardEdit() {
         // Required empty public constructor
@@ -72,6 +81,14 @@ public class ClientCardEdit extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if(context instanceof ClientCardEditListener ){
+            listener= (ClientCardEditListener) context;
+        }else
+            throw new RuntimeException(context.toString()+" must implement ClientCardEditListener");
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -89,7 +106,6 @@ public class ClientCardEdit extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        me = this;
         return inflater.inflate(R.layout.fragment_client_card_edit, container, false);
 
 
@@ -133,39 +149,36 @@ public class ClientCardEdit extends Fragment {
                 }catch (Exception e){
                     Toast.makeText(getActivity(),"Blad podczas zapisywania klienta",Toast.LENGTH_LONG).show();
                 }
-                ClientCardBig clientCardBig = ClientCardBig.newInstance(client);
-                FragmentTransaction ft= getActivity().getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.placeholder,clientCardBig).commit();
+                listener.onBtnSaveClicked();
+
+
 
             }
         });
-        btnDeleteClient.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    //blad
-                    activity = (MainActivity) getActivity();
-                    Toast.makeText(activity,"Usuwam klienta "+activity.getActiveClientPosition()+ " o ID "+client.getClientId(),Toast.LENGTH_LONG).show();
-                    dataBaseHelper.deleteClient(client.getClientId());
-                    activity.adapter.items.remove(activity.getActiveClientPosition());
-                    activity.adapter.notifyItemRemoved(activity.getActiveClientPosition());
+        btnDeleteClient.setOnClickListener(view1 -> {
+            try {
+                activity = (MainActivity) getActivity();
+                Toast.makeText(activity,"Usuwam klienta "+activity.getActiveClientPosition()+ " o ID "+client.getClientId(),Toast.LENGTH_LONG).show();
+                dataBaseHelper.deleteClient(client.getClientId());
+            }catch (Exception e){
+                Toast.makeText(activity,"Nastąpił błąd przy usuwaniu klienta",Toast.LENGTH_LONG).show();
 
-
-                   // FragmentTransaction ft= getActivity().getSupportFragmentManager().beginTransaction();
-                  //  ft.remove(activity.getSupportFragmentManager().findFragmentById(R.id.placeholder)).commit();
-                }catch (Exception e){
-                    Toast.makeText(activity,"Nastąpił błąd przy usuwaniu klienta",Toast.LENGTH_LONG).show();
-
-                }
             }
+            listener.onBtnDeleteClicked();
         });
+    }
+
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener=null;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        activity = (MainActivity) getActivity();
-        activity.adapter.notifyItemChanged(activity.getActiveClientPosition());
+
     }
 }
 

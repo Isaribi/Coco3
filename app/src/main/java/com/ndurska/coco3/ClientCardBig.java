@@ -1,5 +1,6 @@
 package com.ndurska.coco3;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,8 +14,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.io.Serializable;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,6 +36,7 @@ public class ClientCardBig extends Fragment {
     private String adjective;
     private String breed;
     private int ownerID;
+    private ClientCardBigListener listener;
 
 
     //references to elements
@@ -45,6 +45,10 @@ public class ClientCardBig extends Fragment {
     TextView tvClientBreed;
     TextView tvClientOwnerID;
     Button btnClientEdit;
+
+    interface ClientCardBigListener{
+        public void onBtnEditClicked(Client client);
+    }
     public ClientCardBig() {
         // Required empty public constructor
     }
@@ -70,6 +74,16 @@ public class ClientCardBig extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if(context instanceof ClientCardBig.ClientCardBigListener){
+            listener= (ClientCardBig.ClientCardBigListener) context;
+        }else
+            throw new RuntimeException(context.toString()+" must implement ClientCardBigListener");
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -113,15 +127,15 @@ public class ClientCardBig extends Fragment {
         btnClientEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ClientCardEdit clientCardEdit=ClientCardEdit.newInstance((Client) getArguments().getSerializable("client"));
-
-                FragmentTransaction ft= getActivity().getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.placeholder,clientCardEdit).commit();
+                listener.onBtnEditClicked((Client) getArguments().getSerializable("client"));
             }
         });
 
-
-
-
     }
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener=null;
+    }
+
 }
