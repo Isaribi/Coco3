@@ -7,16 +7,21 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements ClientCardEdit.ClientCardEditListener, ClientCardBig.ClientCardBigListener {
 
-    private Button btnClientAdd;
     private EditText etClientSearch;
     private RecyclerView rvClientList;
     ClientCardAdapter adapter;
@@ -36,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements ClientCardEdit.Cl
         clients = dataBaseHelper.getClients();
 
         //find buttons on layout
-        btnClientAdd=findViewById(R.id.btnClientAdd);
+        Button btnClientAdd = findViewById(R.id.btnClientAdd);
         etClientSearch=findViewById(R.id.etClientSearch);
         rvClientList=findViewById(R.id.rvClientList);
         rvClientList.setLayoutManager(new LinearLayoutManager(this));
@@ -44,26 +49,52 @@ public class MainActivity extends AppCompatActivity implements ClientCardEdit.Cl
         //show clients on recycler view
         adapter= new ClientCardAdapter(clients,this);
         rvClientList.setAdapter(adapter);
-
-
-        btnClientAdd.setOnClickListener(new View.OnClickListener() {
+        etClientSearch.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View view) {
-                Client client;
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                try{
-                    //add new client and update recycler view
-                    client=new Client(etClientSearch.getText().toString());
-                    dataBaseHelper.addClient(client);
-                    clients= dataBaseHelper.getClients();
-                    adapter= new ClientCardAdapter(clients,MainActivity.this);
-                    rvClientList.setAdapter(adapter);
+            }
 
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                //search bar behaviour, works with fragments of words in random order
+                List<Client> searchResults= new ArrayList<>();
+                String[] keywords= editable.toString().split(" ");
+                int matches;
+
+                for (Client client : clients){
+                    matches=0;
+                    for(String keyword : keywords)
+                        if( client.toStringShort().toLowerCase().contains(keyword.toLowerCase())){
+                            matches++;
+                        }
+                    if (matches == keywords.length)
+                        searchResults.add(client);
                 }
-                catch(Exception e){
-                    Toast.makeText(MainActivity.this, "New client error", Toast.LENGTH_SHORT).show();
+                adapter= new ClientCardAdapter(searchResults,MainActivity.this);
+                rvClientList.setAdapter(adapter);
 
-                }
+            }
+        } );
+
+
+        btnClientAdd.setOnClickListener(view -> {
+
+            try{
+                //show creation card for a new client
+                etClientSearch.setText(null);
+                ClientCardEdit clientCardEdit = ClientCardEdit.newInstance();
+                activeClientPosition=clients.size();
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.placeholder,clientCardEdit).commit();
+            }
+            catch(Exception e){
+                Toast.makeText(MainActivity.this, "Błąd przy tworzeniu nowego klienta", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -80,20 +111,33 @@ public class MainActivity extends AppCompatActivity implements ClientCardEdit.Cl
 
 
     @Override
-    public void onBtnSaveClicked() {
+    public void onBtnSaveClicked(boolean isNewClient) {
+
+        //close editing and show client
         clients = dataBaseHelper.getClients();
         ClientCardBig clientCardBig = ClientCardBig.newInstance(clients.get(activeClientPosition));
-        FragmentTransaction ft=getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.placeholder,clientCardBig).commit();
-        adapter.notifyItemChanged(activeClientPosition);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.placeholder, clientCardBig).commit();
+
+        if(isNewClient){    //if this is a new client add it to the recycler view
+            adapter.items.add(clients.get(activeClientPosition));
+            adapter.notifyItemInserted(activeClientPosition);
+        }else {     //if this is an existing client update recycler view and show edited client card
+            adapter.notifyItemChanged(activeClientPosition);
+        }
+
     }
 
     @Override
-    public void onBtnDeleteClicked() {
-         FragmentTransaction ft= getSupportFragmentManager().beginTransaction();
-          ft.remove(getSupportFragmentManager().findFragmentById(R.id.placeholder)).commit();
-         adapter.items.remove(activeClientPosition);
-         adapter.notifyItemRemoved(activeClientPosition);
+    public void onBtnDeleteClicked(boolean isNewClient) {
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.remove(Objects.requireNonNull(getSupportFragmentManager().findFragmentById(R.id.placeholder))).commit();
+
+        if(!isNewClient){       //if this is an existing client remove it from view
+            adapter.items.remove(activeClientPosition);
+            adapter.notifyItemRemoved(activeClientPosition);
+        }
 
     }
 

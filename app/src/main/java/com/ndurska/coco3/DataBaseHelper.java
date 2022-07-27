@@ -44,6 +44,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
 
         cv.put(COLUMN_CLIENT_NAME,client.getName());
+        cv.put(COLUMN_CLIENT_ADJECTIVE,client.getAdjective());
+        cv.put(COLUMN_CLIENT_BREED,client.getBreed());
         long insert = db.insert(CLIENT_TABLE, null, cv);
 
         db.close();

@@ -45,6 +45,7 @@ public class ClientCardEdit extends Fragment {
     TextView etClientAdjective;
     TextView etClientBreed;
     TextView etClientOwnerID;
+    TextView tvClientID;
     Button btnSaveChanges;
     Button btnDeleteClient;
 
@@ -52,8 +53,8 @@ public class ClientCardEdit extends Fragment {
 
     interface ClientCardEditListener {
 
-        public void onBtnSaveClicked();
-        public void onBtnDeleteClicked();
+         void onBtnSaveClicked(boolean isNewClient);
+         void onBtnDeleteClicked(boolean isNewClient);
     }
 
     public ClientCardEdit() {
@@ -78,6 +79,15 @@ public class ClientCardEdit extends Fragment {
         args.putString(ARG_ADJECTIVE, client.getAdjective());
         args.putString(ARG_BREED, client.getBreed());
         args.putInt(ARG_OWNER_ID, client.getOwnerId());
+        fragment.setArguments(args);
+        return fragment;
+    }
+    public static ClientCardEdit newInstance() {
+        ClientCardEdit fragment = new ClientCardEdit();
+        //placeholder empty client
+        Client client = new Client();
+        Bundle args = new Bundle();
+        args.putSerializable("client", client);
         fragment.setArguments(args);
         return fragment;
     }
@@ -119,11 +129,13 @@ public class ClientCardEdit extends Fragment {
         etClientAdjective= view.findViewById(R.id.etClientAdjective);
         etClientBreed= view.findViewById(R.id.etClientBreed);
         etClientOwnerID = view.findViewById(R.id.etClientOwnerID);
+        tvClientID=view.findViewById(R.id.tvClientID);
         btnSaveChanges=view.findViewById(R.id.btnSaveChanges);
         btnDeleteClient=view.findViewById(R.id.btnDeleteClient);
         client = (Client) getArguments().getSerializable("client");
         dataBaseHelper = new DataBaseHelper(getActivity());
         try{
+            tvClientID.setText(String.valueOf(ID));
             etClientName.setText( name);
             etClientAdjective.setText(adjective);
             etClientBreed.setText(breed);
@@ -134,40 +146,64 @@ public class ClientCardEdit extends Fragment {
         btnSaveChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-
-
-                    client.setName(etClientName.getText().toString());
-                    client.setAdjective(etClientAdjective.getText().toString());
-                    client.setBreed(etClientBreed.getText().toString());
-                    client.setOwnerId(Integer.parseInt(etClientOwnerID.getText().toString()));
-                   boolean success= dataBaseHelper.editClient(client);
-                   if (success)
-                       Toast.makeText(getActivity(),"Zapisano klienta",Toast.LENGTH_LONG).show();
-                   else
-                       Toast.makeText(getActivity(),"Nie zapisano klienta",Toast.LENGTH_LONG).show();
-                }catch (Exception e){
-                    Toast.makeText(getActivity(),"Blad podczas zapisywania klienta",Toast.LENGTH_LONG).show();
+                if(client.getClientId()!=0){
+                    saveClientEdits();
+                    listener.onBtnSaveClicked(false);
                 }
-                listener.onBtnSaveClicked();
-
-
-
+                else {
+                    createNewClient();
+                    listener.onBtnSaveClicked(true);
+                }
             }
         });
         btnDeleteClient.setOnClickListener(view1 -> {
-            try {
-                activity = (MainActivity) getActivity();
-                Toast.makeText(activity,"Usuwam klienta "+activity.getActiveClientPosition()+ " o ID "+client.getClientId(),Toast.LENGTH_LONG).show();
-                dataBaseHelper.deleteClient(client.getClientId());
-            }catch (Exception e){
-                Toast.makeText(activity,"Nastąpił błąd przy usuwaniu klienta",Toast.LENGTH_LONG).show();
 
+            if(client.getClientId()!=0){    //if we are removing an existing client remove it from database
+                try {
+                    activity = (MainActivity) getActivity();
+                    Toast.makeText(activity,"Usuwam klienta "+activity.getActiveClientPosition()+ " o ID "+client.getClientId(),Toast.LENGTH_LONG).show();
+                    dataBaseHelper.deleteClient(client.getClientId());
+                }catch (Exception e){
+                    Toast.makeText(activity,"Nastąpił błąd przy usuwaniu klienta",Toast.LENGTH_LONG).show();
+                }
+                listener.onBtnDeleteClicked(false);
+
+            }else {           //if we are closing the creation of a new client
+                listener.onBtnDeleteClicked(true);
             }
-            listener.onBtnDeleteClicked();
+
         });
     }
+    private void saveClientEdits(){
+        try {
+            client.setName(etClientName.getText().toString());
+            client.setAdjective(etClientAdjective.getText().toString());
+            client.setBreed(etClientBreed.getText().toString());
+            client.setOwnerId(Integer.parseInt(etClientOwnerID.getText().toString()));
+            boolean success= dataBaseHelper.editClient(client);
+            if (success)
+                Toast.makeText(getActivity(),"Zapisano zmiany klienta",Toast.LENGTH_LONG).show();
+            else
+                Toast.makeText(getActivity(),"Nie zapisano zmian klienta",Toast.LENGTH_LONG).show();
+         }catch (Exception e){
+            Toast.makeText(getActivity(),"Blad podczas zapisywania zmian klienta",Toast.LENGTH_LONG).show();
+         }
+    }
 
+    private void createNewClient(){
+        try {
+            client.setName(etClientName.getText().toString());
+            client.setAdjective(etClientAdjective.getText().toString());
+            client.setBreed(etClientBreed.getText().toString());
+            boolean success= dataBaseHelper.addClient(client);
+            if (success)
+                Toast.makeText(getActivity(),"Zapisano nowego klienta",Toast.LENGTH_LONG).show();
+            else
+                Toast.makeText(getActivity(),"Nie zapisano nowego klienta",Toast.LENGTH_LONG).show();
+        }catch (Exception e){
+            Toast.makeText(getActivity(),"Blad podczas tworzenia klienta",Toast.LENGTH_LONG).show();
+        }
+    }
 
     @Override
     public void onDetach() {

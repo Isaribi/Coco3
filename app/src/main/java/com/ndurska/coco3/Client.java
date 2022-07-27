@@ -88,4 +88,7 @@ public class Client implements Serializable {
                 ", breed='" + breed + '\'' +
                 '}';
     }
+    public String toStringShort() {
+        return name + adjective + breed;
+    }
 }

@@ -40,8 +40,10 @@ public class ClientCardAdapter extends RecyclerView.Adapter<ClientCardVH> {
     @Override
     public void onBindViewHolder(@NonNull ClientCardVH holder, int position) {
         try {
-            holder.tvClientID.setText( String.valueOf(items.get(position).getClientId()));
-            holder.tvClientName.setText(items.get(position).getName());
+            Client client=items.get(position);
+            holder.tvClientID.setText( String.valueOf(client.getClientId()));
+            StringBuffer clientName= new StringBuffer(client.getName()+" "+client.getAdjective()+" "+client.getBreed());
+            holder.tvClientName.setText(clientName);
 
         }catch(Exception e){
             holder.tvClientID.setText("ERR");

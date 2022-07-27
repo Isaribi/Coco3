@@ -44,6 +44,7 @@ public class ClientCardBig extends Fragment {
     TextView tvClientAdjective;
     TextView tvClientBreed;
     TextView tvClientOwnerID;
+    TextView tvClientID;
     Button btnClientEdit;
 
     interface ClientCardBigListener{
@@ -115,12 +116,14 @@ public class ClientCardBig extends Fragment {
         tvClientAdjective= view.findViewById(R.id.tvClientAdjective);
         tvClientBreed= view.findViewById(R.id.tvClientBreed);
         tvClientOwnerID = view.findViewById(R.id.tvClientOwnerID);
+        tvClientID =  view.findViewById(R.id.tvClientID);
         btnClientEdit = view.findViewById(R.id.btnClientEdit);
         try {
             tvClientName.setText(name);
             tvClientAdjective.setText(adjective);
             tvClientBreed.setText(breed);
             tvClientOwnerID.setText(String.valueOf(ownerID));
+            tvClientID.setText(String.valueOf(ID));
         }catch (Exception e){
             Toast.makeText(getActivity(),"Blad w onViewCreated",Toast.LENGTH_LONG).show();
         }
