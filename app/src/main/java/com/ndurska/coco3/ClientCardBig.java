@@ -28,6 +28,8 @@ public class ClientCardBig extends Fragment {
     private static final String ARG_NAME = "name";
     private static final String ARG_ADJECTIVE = "adjective";
     private static final String ARG_BREED = "breed";
+    private static final String ARG_PHONE_NUMBER_1 = "phoneNumber1";
+    private static final String ARG_PHONE_NUMBER_2 = "phoneNumber2";
     private static final String ARG_OWNER_ID = "ownerID";
 
     // TODO: Rename and change types of parameters
@@ -35,17 +37,21 @@ public class ClientCardBig extends Fragment {
     private String name;
     private String adjective;
     private String breed;
+    private String phoneNumber1;
+    private String phoneNumber2;
     private int ownerID;
     private ClientCardBigListener listener;
 
 
     //references to elements
-    TextView tvClientName;
-    TextView tvClientAdjective;
-    TextView tvClientBreed;
-    TextView tvClientOwnerID;
-    TextView tvClientID;
-    Button btnClientEdit;
+    TextView tvName;
+    TextView tvAdjective;
+    TextView tvBreed;
+    TextView tvOwnerID;
+    TextView tvID;
+    TextView tvPhoneNumber1;
+    TextView tvPhoneNumber2;
+    Button btnEdit;
 
     interface ClientCardBigListener{
         public void onBtnEditClicked(Client client);
@@ -65,12 +71,13 @@ public class ClientCardBig extends Fragment {
         ClientCardBig fragment = new ClientCardBig();
         Bundle args = new Bundle();
 
-
         args.putSerializable("client", client);
         args.putInt(ARG_ID,client.getClientId());
         args.putString(ARG_NAME, client.getName());
         args.putString(ARG_ADJECTIVE, client.getAdjective());
         args.putString(ARG_BREED, client.getBreed());
+        args.putString(ARG_PHONE_NUMBER_1, client.getPhoneNumber1());
+        args.putString(ARG_PHONE_NUMBER_2, client.getPhoneNumber2());
         args.putInt(ARG_OWNER_ID, client.getOwnerId());
         fragment.setArguments(args);
         return fragment;
@@ -95,6 +102,8 @@ public class ClientCardBig extends Fragment {
             name = getArguments().getString(ARG_NAME);
             adjective= getArguments().getString(ARG_ADJECTIVE);
             breed = getArguments().getString(ARG_BREED);
+            phoneNumber1 = getArguments().getString(ARG_PHONE_NUMBER_1);
+            phoneNumber2 = getArguments().getString(ARG_PHONE_NUMBER_2);
             ownerID = getArguments().getInt(ARG_OWNER_ID);
         }
 
@@ -112,22 +121,24 @@ public class ClientCardBig extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        tvClientName= view.findViewById(R.id.tvClientName);
-        tvClientAdjective= view.findViewById(R.id.tvClientAdjective);
-        tvClientBreed= view.findViewById(R.id.tvClientBreed);
-        tvClientOwnerID = view.findViewById(R.id.tvClientOwnerID);
-        tvClientID =  view.findViewById(R.id.tvClientID);
-        btnClientEdit = view.findViewById(R.id.btnClientEdit);
+        tvName= view.findViewById(R.id.tvClientName);
+        tvAdjective= view.findViewById(R.id.tvClientAdjective);
+        tvBreed= view.findViewById(R.id.tvClientBreed);
+        tvPhoneNumber1 = view.findViewById(R.id.tvPhoneNumber1);
+        tvPhoneNumber2 = view.findViewById(R.id.tvPhoneNumber2);
+        tvID =  view.findViewById(R.id.tvClientID);
+        btnEdit = view.findViewById(R.id.btnClientEdit);
         try {
-            tvClientName.setText(name);
-            tvClientAdjective.setText(adjective);
-            tvClientBreed.setText(breed);
-            tvClientOwnerID.setText(String.valueOf(ownerID));
-            tvClientID.setText(String.valueOf(ID));
+            tvName.setText(name);
+            tvAdjective.setText(adjective);
+            tvBreed.setText(breed);
+            tvPhoneNumber1.setText(phoneNumber1);
+            tvPhoneNumber2.setText(phoneNumber2);
+            tvID.setText(String.valueOf(ID));
         }catch (Exception e){
             Toast.makeText(getActivity(),"Blad w onViewCreated",Toast.LENGTH_LONG).show();
         }
-        btnClientEdit.setOnClickListener(new View.OnClickListener() {
+        btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 listener.onBtnEditClicked((Client) getArguments().getSerializable("client"));

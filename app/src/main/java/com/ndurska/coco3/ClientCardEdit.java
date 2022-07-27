@@ -8,10 +8,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,14 +30,16 @@ public class ClientCardEdit extends Fragment {
     private static final String ARG_NAME = "name";
     private static final String ARG_ADJECTIVE = "adjective";
     private static final String ARG_BREED = "breed";
-    private static final String ARG_OWNER_ID = "ownerID";
+    private static final String ARG_PHONE_NUMBER1 = "phoneNumber1";
+    private static final String ARG_PHONE_NUMBER2 = "phoneNumber2";
 
     private Client client;
     private int ID;
     private String name;
     private String adjective;
     private String breed;
-    private int ownerID;
+    private String phoneNumber1;
+    private String phoneNumber2;
     DataBaseHelper dataBaseHelper;
     MainActivity activity;
 
@@ -44,7 +48,8 @@ public class ClientCardEdit extends Fragment {
     TextView etClientName;
     TextView etClientAdjective;
     TextView etClientBreed;
-    TextView etClientOwnerID;
+    TextView etPhoneNumber1;
+    TextView etPhoneNumber2;
     TextView tvClientID;
     Button btnSaveChanges;
     Button btnDeleteClient;
@@ -78,11 +83,12 @@ public class ClientCardEdit extends Fragment {
         args.putString(ARG_NAME, client.getName());
         args.putString(ARG_ADJECTIVE, client.getAdjective());
         args.putString(ARG_BREED, client.getBreed());
-        args.putInt(ARG_OWNER_ID, client.getOwnerId());
+        args.putString(ARG_PHONE_NUMBER1, client.getPhoneNumber1());
+        args.putString(ARG_PHONE_NUMBER2, client.getPhoneNumber2());
         fragment.setArguments(args);
         return fragment;
     }
-    public static ClientCardEdit newInstance() {
+    public static ClientCardEdit newInstance() { //display an empty card for new client creation
         ClientCardEdit fragment = new ClientCardEdit();
         //placeholder empty client
         Client client = new Client();
@@ -109,7 +115,8 @@ public class ClientCardEdit extends Fragment {
             name = getArguments().getString(ARG_NAME);
             adjective= getArguments().getString(ARG_ADJECTIVE);
             breed = getArguments().getString(ARG_BREED);
-            ownerID = getArguments().getInt(ARG_OWNER_ID);
+            phoneNumber1 = getArguments().getString(ARG_PHONE_NUMBER1);
+            phoneNumber2 = getArguments().getString(ARG_PHONE_NUMBER2);
         }
     }
     @Override
@@ -128,7 +135,8 @@ public class ClientCardEdit extends Fragment {
         etClientName= view.findViewById(R.id.etClientName);
         etClientAdjective= view.findViewById(R.id.etClientAdjective);
         etClientBreed= view.findViewById(R.id.etClientBreed);
-        etClientOwnerID = view.findViewById(R.id.etClientOwnerID);
+        etPhoneNumber1= view.findViewById(R.id.etPhoneNumber1);
+        etPhoneNumber2= view.findViewById(R.id.etPhoneNumber2);
         tvClientID=view.findViewById(R.id.tvClientID);
         btnSaveChanges=view.findViewById(R.id.btnSaveChanges);
         btnDeleteClient=view.findViewById(R.id.btnDeleteClient);
@@ -139,7 +147,9 @@ public class ClientCardEdit extends Fragment {
             etClientName.setText( name);
             etClientAdjective.setText(adjective);
             etClientBreed.setText(breed);
-            etClientOwnerID.setText(String.valueOf(ownerID));
+            etPhoneNumber1.setText(phoneNumber1);
+            etPhoneNumber2.setText(phoneNumber2);
+
         }catch (Exception e){
         Toast.makeText(getActivity(),"Blad w onViewCreated Edit",Toast.LENGTH_LONG).show();
     }
@@ -179,7 +189,8 @@ public class ClientCardEdit extends Fragment {
             client.setName(etClientName.getText().toString());
             client.setAdjective(etClientAdjective.getText().toString());
             client.setBreed(etClientBreed.getText().toString());
-            client.setOwnerId(Integer.parseInt(etClientOwnerID.getText().toString()));
+            client.setPhoneNumber1(etPhoneNumber1.getText().toString());
+            client.setPhoneNumber2(etPhoneNumber2.getText().toString());
             boolean success= dataBaseHelper.editClient(client);
             if (success)
                 Toast.makeText(getActivity(),"Zapisano zmiany klienta",Toast.LENGTH_LONG).show();
@@ -195,6 +206,8 @@ public class ClientCardEdit extends Fragment {
             client.setName(etClientName.getText().toString());
             client.setAdjective(etClientAdjective.getText().toString());
             client.setBreed(etClientBreed.getText().toString());
+            client.setPhoneNumber1(etPhoneNumber1.getText().toString());
+            client.setPhoneNumber2(etPhoneNumber2.getText().toString());
             boolean success= dataBaseHelper.addClient(client);
             if (success)
                 Toast.makeText(getActivity(),"Zapisano nowego klienta",Toast.LENGTH_LONG).show();

@@ -11,6 +11,58 @@
     <!-- TODO: Update blank fragment layout -->
 
 
+    <TextView
+        android:id="@+id/tvPhoneNumberLabel1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvClientName"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="86dp"
+        android:layout_toEndOf="@+id/imageView"
+        android:minWidth="100dp"
+        android:minHeight="40dp"
+        android:text="Telefon:"
+        android:textSize="34sp" />
+
+    <TextView
+        android:id="@+id/tvPhoneNumber1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvClientName"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="86dp"
+        android:layout_toEndOf="@+id/tvPhoneNumberLabel1"
+        android:minWidth="100dp"
+        android:minHeight="40dp"
+        android:text="Phone1"
+        android:textSize="34sp" />
+
+    <TextView
+        android:id="@+id/tvPhoneNumber2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvPhoneNumber1"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="19dp"
+        android:layout_toEndOf="@+id/tvPhoneNumberLabel2"
+        android:minWidth="100dp"
+        android:minHeight="40dp"
+        android:text="Phone2"
+        android:textSize="34sp" />
+
+    <TextView
+        android:id="@+id/tvPhoneNumberLabel2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvClientName"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="149dp"
+        android:layout_toEndOf="@+id/imageView"
+        android:minWidth="100dp"
+        android:minHeight="40dp"
+        android:text="Telefon:"
+        android:textSize="34sp" />
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="156dp"
@@ -58,34 +110,8 @@
         android:layout_toEndOf="@+id/imageView"
         android:minWidth="100dp"
         android:minHeight="40dp"
-        android:textSize="34sp"
-        android:text="Breed" />
-
-    <TextView
-        android:id="@+id/labelOwner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvClientBreed"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="22dp"
-        android:layout_toEndOf="@+id/imageView"
-        android:minWidth="100dp"
-        android:minHeight="40dp"
-        android:textSize="34sp"
-        android:text="Właściciel:" />
-
-    <TextView
-        android:id="@+id/tvClientOwnerID"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvClientBreed"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="22dp"
-        android:layout_toEndOf="@+id/labelOwner"
-        android:minWidth="100dp"
-        android:minHeight="40dp"
-        android:textSize="34sp"
-        android:text="OwnerID" />
+        android:text="Breed"
+        android:textSize="34sp" />
 
     <Button
         android:id="@+id/btnClientEdit"

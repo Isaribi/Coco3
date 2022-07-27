@@ -17,6 +17,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_CLIENT_ADJECTIVE = "CLIENT_ADJECTIVE";
     public static final String COLUMN_CLIENT_BREED = "CLIENT_BREED";
     public static final String COLUMN_CLIENT_ID = "ID";
+    public static final String COLUMN_CLIENT_PHONE_NUMBER_1 = "PHONE_NUMBER_1";
+    public static final String COLUMN_CLIENT_PHONE_NUMBER_2 = "PHONE_NUMBER_2";
     public static final String COLUMN_CLIENT_OWNER_ID = "CLIENT_OWNER_" + COLUMN_CLIENT_ID;
 
     public DataBaseHelper(@Nullable Context context) {
@@ -30,6 +32,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 COLUMN_CLIENT_NAME + " TEXT, " +
                 COLUMN_CLIENT_ADJECTIVE + " TEXT, " +
                 COLUMN_CLIENT_BREED + " TEXT," +
+                COLUMN_CLIENT_PHONE_NUMBER_1 + " TEXT," +
+                COLUMN_CLIENT_PHONE_NUMBER_2 + " TEXT," +
                 COLUMN_CLIENT_OWNER_ID + " INT)";
         sqLiteDatabase.execSQL(createTableStatement);
 
@@ -46,6 +50,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_CLIENT_NAME,client.getName());
         cv.put(COLUMN_CLIENT_ADJECTIVE,client.getAdjective());
         cv.put(COLUMN_CLIENT_BREED,client.getBreed());
+        cv.put(COLUMN_CLIENT_PHONE_NUMBER_1,client.getPhoneNumber1());
+        cv.put(COLUMN_CLIENT_PHONE_NUMBER_2,client.getPhoneNumber2());
         long insert = db.insert(CLIENT_TABLE, null, cv);
 
         db.close();
@@ -75,6 +81,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_CLIENT_NAME,client.getName());
         cv.put(COLUMN_CLIENT_ADJECTIVE,client.getAdjective());
         cv.put(COLUMN_CLIENT_BREED,client.getBreed());
+        cv.put(COLUMN_CLIENT_PHONE_NUMBER_1,client.getPhoneNumber1());
+        cv.put(COLUMN_CLIENT_PHONE_NUMBER_2,client.getPhoneNumber2());
         cv.put(COLUMN_CLIENT_OWNER_ID,client.getOwnerId());
 
         int insert=db.update(CLIENT_TABLE,cv,COLUMN_CLIENT_ID+" = "+client.getClientId(),null);
@@ -99,8 +107,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 String clientName= cursor.getString(1);
                 String clientAdjective= cursor.getString(2);
                 String clientBreed= cursor.getString(3);
-                int clientOwnerID= cursor.getInt(4);
-                Client newClient =  new Client(clientID,clientName,clientAdjective,clientBreed,clientOwnerID);
+                String clientPhoneNumber1 = cursor.getString(4);
+                String clientPhoneNumber2 = cursor.getString(5);
+                int clientOwnerID= cursor.getInt(6);
+                Client newClient =  new Client(clientID,clientName,clientAdjective,clientBreed,clientOwnerID,clientPhoneNumber1,clientPhoneNumber2);
                 clientList.add(newClient);
             }while(cursor.moveToNext());
 

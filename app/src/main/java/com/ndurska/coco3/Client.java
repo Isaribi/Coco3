@@ -8,15 +8,19 @@ public class Client implements Serializable {
     String name;
     String adjective;
     String breed;
+    String phoneNumber1;
+    String phoneNumber2;
     int ownerId;
     String[] notes;
 
-    public Client(int clientId, String name, String adjective, String breed, int ownerId) {
+    public Client(int clientId, String name, String adjective, String breed, int ownerId, String phoneNumber1,String phoneNumber2) {
         this.clientId = clientId;
         this.name = name;
         this.adjective = adjective;
         this.breed = breed;
         this.ownerId = ownerId;
+        this.phoneNumber1 = phoneNumber1;
+        this.phoneNumber2 = phoneNumber2;
     }
 
     public Client(String name) {
@@ -79,6 +83,14 @@ public class Client implements Serializable {
         this.notes = notes;
     }
 
+    public String getPhoneNumber1() { return phoneNumber1; }
+
+    public void setPhoneNumber1(String phoneNumber1) { this.phoneNumber1 = phoneNumber1; }
+
+    public String getPhoneNumber2() { return phoneNumber2; }
+
+    public void setPhoneNumber2(String phoneNumber2) { this.phoneNumber2 = phoneNumber2; }
+
     @Override
     public String toString() {
         return "Client{" +
@@ -89,6 +101,6 @@ public class Client implements Serializable {
                 '}';
     }
     public String toStringShort() {
-        return name + adjective + breed;
+        return name + adjective + breed + phoneNumber1 + phoneNumber2;
     }
 }
