@@ -5,8 +5,8 @@
       <map>
         <entry key="..\:/Coco3/app/src/main/res/layout/activity_main.xml" value="0.15" />
         <entry key="..\:/Coco3/app/src/main/res/layout/client_card_item.xml" value="0.15442708333333333" />
-        <entry key="..\:/Coco3/app/src/main/res/layout/fragment_client_card_big.xml" value="0.14" />
-        <entry key="..\:/Coco3/app/src/main/res/layout/fragment_client_card_edit.xml" value="0.67" />
+        <entry key="..\:/Coco3/app/src/main/res/layout/fragment_client_card_big.xml" value="0.5" />
+        <entry key="..\:/Coco3/app/src/main/res/layout/fragment_client_card_edit.xml" value="0.5" />
       </map>
     </option>
   </component>

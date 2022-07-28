@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -117,6 +118,62 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         db.close();
+        return clientList;
+    }
+    public Client getClient(int ID){
+
+        String queryString = "SELECT * FROM "+CLIENT_TABLE+" WHERE "+COLUMN_CLIENT_ID+" = "+ID;
+
+        SQLiteDatabase db =  this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString,null);
+        Client client = null;
+
+        if (cursor.moveToFirst()){
+            do {
+                int clientID=cursor.getInt(0);
+                String clientName= cursor.getString(1);
+                String clientAdjective= cursor.getString(2);
+                String clientBreed= cursor.getString(3);
+                String clientPhoneNumber1 = cursor.getString(4);
+                String clientPhoneNumber2 = cursor.getString(5);
+                int clientOwnerID= cursor.getInt(6);
+                 client =  new Client(clientID,clientName,clientAdjective,clientBreed,clientOwnerID,clientPhoneNumber1,clientPhoneNumber2);
+            }while(cursor.moveToNext());
+
+        }
+        cursor.close();
+        db.close();
+        return client;
+    }
+    public List<Client> getSameOwnerClients(Client client){
+        List<Client> clientList =  new ArrayList<>();
+
+        String queryString = "SELECT * FROM " + CLIENT_TABLE + " WHERE ((" + COLUMN_CLIENT_PHONE_NUMBER_1 +" = '"+client.getPhoneNumber1() + "'AND "+COLUMN_CLIENT_PHONE_NUMBER_1 +"<> '') OR ("+
+                                                                           COLUMN_CLIENT_PHONE_NUMBER_1 +" = '"+client.getPhoneNumber2() + "'AND "+COLUMN_CLIENT_PHONE_NUMBER_1 +"<> '') OR ("+
+                                                                           COLUMN_CLIENT_PHONE_NUMBER_2 +" = '"+client.getPhoneNumber1() + "'AND "+COLUMN_CLIENT_PHONE_NUMBER_2 +"<> '') OR ("+
+                                                                           COLUMN_CLIENT_PHONE_NUMBER_2 +" = '"+client.getPhoneNumber2() + "'AND "+COLUMN_CLIENT_PHONE_NUMBER_2 +"<> '')) AND "+
+                                                                           COLUMN_CLIENT_ID + " NOT LIKE '" +client.getClientId()+"'";
+        SQLiteDatabase db =  this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString,null);
+
+
+        if (cursor.moveToFirst()){
+            do {
+                int clientID=cursor.getInt(0);
+                String clientName= cursor.getString(1);
+                String clientAdjective= cursor.getString(2);
+                String clientBreed= cursor.getString(3);
+                String clientPhoneNumber1 = cursor.getString(4);
+                String clientPhoneNumber2 = cursor.getString(5);
+                int clientOwnerID= cursor.getInt(6);
+                Client newClient =  new Client(clientID, clientName,clientAdjective,clientBreed,clientOwnerID,clientPhoneNumber1,clientPhoneNumber2);
+                clientList.add(newClient);
+            }while(cursor.moveToNext());
+
+        }
+
+
+
         return clientList;
     }
 }

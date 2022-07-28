@@ -4,14 +4,14 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 public class Client implements Serializable {
-    int clientId;
-    String name;
-    String adjective;
-    String breed;
-    String phoneNumber1;
-    String phoneNumber2;
-    int ownerId;
-    String[] notes;
+    private int clientId;
+    private String name;
+    private String adjective;
+    private String breed;
+    private String phoneNumber1;
+    private String phoneNumber2;
+    private int ownerId;
+    private String[] notes;
 
     public Client(int clientId, String name, String adjective, String breed, int ownerId, String phoneNumber1,String phoneNumber2) {
         this.clientId = clientId;

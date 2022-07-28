@@ -12,8 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,6 +38,7 @@ public class ClientCardBig extends Fragment {
     private static final String ARG_OWNER_ID = "ownerID";
 
     // TODO: Rename and change types of parameters
+
     private int ID;
     private String name;
     private String adjective;
@@ -47,11 +53,11 @@ public class ClientCardBig extends Fragment {
     TextView tvName;
     TextView tvAdjective;
     TextView tvBreed;
-    TextView tvOwnerID;
     TextView tvID;
     TextView tvPhoneNumber1;
     TextView tvPhoneNumber2;
     Button btnEdit;
+    LinearLayout sameOwnerClients;
 
     interface ClientCardBigListener{
         public void onBtnEditClicked(Client client);
@@ -71,6 +77,7 @@ public class ClientCardBig extends Fragment {
         ClientCardBig fragment = new ClientCardBig();
         Bundle args = new Bundle();
 
+
         args.putSerializable("client", client);
         args.putInt(ARG_ID,client.getClientId());
         args.putString(ARG_NAME, client.getName());
@@ -80,6 +87,8 @@ public class ClientCardBig extends Fragment {
         args.putString(ARG_PHONE_NUMBER_2, client.getPhoneNumber2());
         args.putInt(ARG_OWNER_ID, client.getOwnerId());
         fragment.setArguments(args);
+
+
         return fragment;
     }
 
@@ -128,6 +137,9 @@ public class ClientCardBig extends Fragment {
         tvPhoneNumber2 = view.findViewById(R.id.tvPhoneNumber2);
         tvID =  view.findViewById(R.id.tvClientID);
         btnEdit = view.findViewById(R.id.btnClientEdit);
+        sameOwnerClients = view.findViewById(R.id.llSameOwnerClients);
+
+
         try {
             tvName.setText(name);
             tvAdjective.setText(adjective);
@@ -135,6 +147,24 @@ public class ClientCardBig extends Fragment {
             tvPhoneNumber1.setText(phoneNumber1);
             tvPhoneNumber2.setText(phoneNumber2);
             tvID.setText(String.valueOf(ID));
+
+            DataBaseHelper dataBaseHelper = new DataBaseHelper(getActivity());
+            Client c =  dataBaseHelper.getClient(ID);
+
+
+
+            for (Client client : dataBaseHelper.getSameOwnerClients(c)){
+                TextView clientName = new TextView(getActivity());
+                clientName.setText(client.getName());
+                clientName.setTextSize(20);
+                clientName.setPadding(5,5,5,5);
+
+                sameOwnerClients.addView(clientName);
+
+
+            }
+
+
         }catch (Exception e){
             Toast.makeText(getActivity(),"Blad w onViewCreated",Toast.LENGTH_LONG).show();
         }
