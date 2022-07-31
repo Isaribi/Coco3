@@ -10,8 +10,8 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <TextView
-        android:id="@+id/tvPhoneNumberLabel1"
+    <EditText
+        android:id="@+id/etPhoneNumberLabel1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/imageView"
@@ -27,10 +27,10 @@
         android:id="@+id/etPhoneNumber1"
         android:layout_width="189dp"
         android:layout_height="54dp"
-        android:layout_alignTop="@+id/tvPhoneNumberLabel1"
+        android:layout_alignTop="@+id/etPhoneNumberLabel1"
         android:layout_marginStart="17dp"
         android:layout_marginTop="0dp"
-        android:layout_toEndOf="@+id/tvPhoneNumberLabel1"
+        android:layout_toEndOf="@+id/etPhoneNumberLabel1"
         android:minWidth="100dp"
         android:minHeight="40dp"
         android:textSize="34sp" />
@@ -39,20 +39,20 @@
         android:id="@+id/etPhoneNumber2"
         android:layout_width="187dp"
         android:layout_height="56dp"
-        android:layout_alignTop="@+id/tvPhoneNumberLabel2"
+        android:layout_alignTop="@+id/etPhoneNumberLabel2"
         android:layout_marginStart="17dp"
         android:layout_marginTop="0dp"
-        android:layout_toEndOf="@+id/tvPhoneNumberLabel2"
+        android:layout_toEndOf="@+id/etPhoneNumberLabel2"
         android:minWidth="100dp"
         android:minHeight="40dp"
         android:textSize="34sp" />
 
-    <TextView
-        android:id="@+id/tvPhoneNumberLabel2"
+    <EditText
+        android:id="@+id/etPhoneNumberLabel2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvPhoneNumberLabel1"
-        android:layout_alignStart="@+id/tvPhoneNumberLabel1"
+        android:layout_below="@+id/etPhoneNumberLabel1"
+        android:layout_alignStart="@+id/etPhoneNumberLabel1"
         android:layout_marginStart="0dp"
         android:layout_marginTop="37dp"
         android:minWidth="100dp"
@@ -92,6 +92,7 @@
         android:layout_alignStart="@+id/etClientName"
         android:layout_marginStart="1dp"
         android:layout_marginTop="11dp"
+        android:hint="Pseudonim"
         android:minWidth="100dp"
         android:minHeight="40dp"
         android:text="Adjective"
@@ -105,6 +106,7 @@
         android:layout_alignStart="@+id/etClientAdjective"
         android:layout_marginStart="0dp"
         android:layout_marginTop="11dp"
+        android:hint="Rasa"
         android:minWidth="100dp"
         android:minHeight="40dp"
         android:text="Breed"
@@ -118,7 +120,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="23dp"
         android:layout_marginBottom="28dp"
-        android:text="Save" />
+        android:text="Zapisz" />
 
     <Button
         android:id="@+id/btnDeleteClient"

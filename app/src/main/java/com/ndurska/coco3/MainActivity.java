@@ -137,6 +137,7 @@ public class MainActivity extends AppCompatActivity implements ClientCardEdit.Cl
         if(!isNewClient){       //if this is an existing client remove it from view
             adapter.items.remove(activeClientPosition);
             adapter.notifyItemRemoved(activeClientPosition);
+
         }
 
     }
@@ -146,5 +147,16 @@ public class MainActivity extends AppCompatActivity implements ClientCardEdit.Cl
          ClientCardEdit clientCardEdit=ClientCardEdit.newInstance(client);
          FragmentTransaction ft= getSupportFragmentManager().beginTransaction();
           ft.replace(R.id.placeholder,clientCardEdit).commit();
+    }
+
+    @Override
+    public void onSameOwnerClientClicked(Client client) {
+        ClientCardBig clientCardBig=ClientCardBig.newInstance(client);
+        FragmentTransaction ft= getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.placeholder,clientCardBig).commit();
+        for (Client c : clients)
+            if (c.getClientId() == client.getClientId())
+                setActiveClientPosition(clients.indexOf(c));
+
     }
 }

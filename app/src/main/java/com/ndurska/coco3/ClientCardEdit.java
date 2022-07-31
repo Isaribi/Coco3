@@ -32,7 +32,8 @@ public class ClientCardEdit extends Fragment {
     private static final String ARG_BREED = "breed";
     private static final String ARG_PHONE_NUMBER1 = "phoneNumber1";
     private static final String ARG_PHONE_NUMBER2 = "phoneNumber2";
-
+    private static final String ARG_PHONE_NUMBER_lABEL_1 = "phoneNumberLabel1";
+    private static final String ARG_PHONE_NUMBER_LABEL_2 = "phoneNumberLabel2";
     private Client client;
     private int ID;
     private String name;
@@ -40,6 +41,8 @@ public class ClientCardEdit extends Fragment {
     private String breed;
     private String phoneNumber1;
     private String phoneNumber2;
+    private String phoneNumberLabel1;
+    private String phoneNumberLabel2;
     DataBaseHelper dataBaseHelper;
     MainActivity activity;
 
@@ -50,6 +53,8 @@ public class ClientCardEdit extends Fragment {
     TextView etClientBreed;
     TextView etPhoneNumber1;
     TextView etPhoneNumber2;
+    TextView etPhoneNumberLabel1;
+    TextView etPhoneNumberLabel2;
     TextView tvClientID;
     Button btnSaveChanges;
     Button btnDeleteClient;
@@ -85,6 +90,8 @@ public class ClientCardEdit extends Fragment {
         args.putString(ARG_BREED, client.getBreed());
         args.putString(ARG_PHONE_NUMBER1, client.getPhoneNumber1());
         args.putString(ARG_PHONE_NUMBER2, client.getPhoneNumber2());
+        args.putString(ARG_PHONE_NUMBER_lABEL_1, client.getPhoneNumberLabel1());
+        args.putString(ARG_PHONE_NUMBER_LABEL_2, client.getPhoneNumberLabel2());
         fragment.setArguments(args);
         return fragment;
     }
@@ -103,7 +110,7 @@ public class ClientCardEdit extends Fragment {
         if(context instanceof ClientCardEditListener ){
             listener= (ClientCardEditListener) context;
         }else
-            throw new RuntimeException(context.toString()+" must implement ClientCardEditListener");
+            throw new RuntimeException(context+" must implement ClientCardEditListener");
     }
 
     @Override
@@ -117,6 +124,8 @@ public class ClientCardEdit extends Fragment {
             breed = getArguments().getString(ARG_BREED);
             phoneNumber1 = getArguments().getString(ARG_PHONE_NUMBER1);
             phoneNumber2 = getArguments().getString(ARG_PHONE_NUMBER2);
+            phoneNumberLabel1 = getArguments().getString(ARG_PHONE_NUMBER_lABEL_1);
+            phoneNumberLabel2 = getArguments().getString(ARG_PHONE_NUMBER_LABEL_2);
         }
     }
     @Override
@@ -137,6 +146,8 @@ public class ClientCardEdit extends Fragment {
         etClientBreed= view.findViewById(R.id.etClientBreed);
         etPhoneNumber1= view.findViewById(R.id.etPhoneNumber1);
         etPhoneNumber2= view.findViewById(R.id.etPhoneNumber2);
+        etPhoneNumberLabel1= view.findViewById(R.id.etPhoneNumberLabel1);
+        etPhoneNumberLabel2= view.findViewById(R.id.etPhoneNumberLabel2);
         tvClientID=view.findViewById(R.id.tvClientID);
         btnSaveChanges=view.findViewById(R.id.btnSaveChanges);
         btnDeleteClient=view.findViewById(R.id.btnDeleteClient);
@@ -144,11 +155,19 @@ public class ClientCardEdit extends Fragment {
         dataBaseHelper = new DataBaseHelper(getActivity());
         try{
             tvClientID.setText(String.valueOf(ID));
-            etClientName.setText( name);
+            etClientName.setText(name);
             etClientAdjective.setText(adjective);
             etClientBreed.setText(breed);
             etPhoneNumber1.setText(phoneNumber1);
             etPhoneNumber2.setText(phoneNumber2);
+            if(phoneNumberLabel1.length()==0)
+                etPhoneNumberLabel1.setText("Telefon:");
+            else
+                etPhoneNumberLabel1.setText(phoneNumberLabel1);
+            if(phoneNumberLabel2.length()==0)
+                etPhoneNumberLabel2.setText("Telefon:");
+            else
+                etPhoneNumberLabel2.setText(phoneNumberLabel2);
 
         }catch (Exception e){
         Toast.makeText(getActivity(),"Blad w onViewCreated Edit",Toast.LENGTH_LONG).show();
@@ -191,6 +210,8 @@ public class ClientCardEdit extends Fragment {
             client.setBreed(etClientBreed.getText().toString());
             client.setPhoneNumber1(etPhoneNumber1.getText().toString());
             client.setPhoneNumber2(etPhoneNumber2.getText().toString());
+            client.setPhoneNumberLabel1(etPhoneNumberLabel1.getText().toString());
+            client.setPhoneNumberLabel2(etPhoneNumberLabel2.getText().toString());
             boolean success= dataBaseHelper.editClient(client);
             if (success)
                 Toast.makeText(getActivity(),"Zapisano zmiany klienta",Toast.LENGTH_LONG).show();
@@ -208,6 +229,8 @@ public class ClientCardEdit extends Fragment {
             client.setBreed(etClientBreed.getText().toString());
             client.setPhoneNumber1(etPhoneNumber1.getText().toString());
             client.setPhoneNumber2(etPhoneNumber2.getText().toString());
+            client.setPhoneNumberLabel1(etPhoneNumberLabel1.getText().toString());
+            client.setPhoneNumberLabel2(etPhoneNumberLabel2.getText().toString());
             boolean success= dataBaseHelper.addClient(client);
             if (success)
                 Toast.makeText(getActivity(),"Zapisano nowego klienta",Toast.LENGTH_LONG).show();

@@ -10,10 +10,12 @@ public class Client implements Serializable {
     private String breed;
     private String phoneNumber1;
     private String phoneNumber2;
+    private String phoneNumberLabel1;
+    private String phoneNumberLabel2;
     private int ownerId;
     private String[] notes;
 
-    public Client(int clientId, String name, String adjective, String breed, int ownerId, String phoneNumber1,String phoneNumber2) {
+    public Client(int clientId, String name, String adjective, String breed, int ownerId, String phoneNumber1,String phoneNumber2,String phoneNumberLabel1,String phoneNumberLabel2) {
         this.clientId = clientId;
         this.name = name;
         this.adjective = adjective;
@@ -21,6 +23,8 @@ public class Client implements Serializable {
         this.ownerId = ownerId;
         this.phoneNumber1 = phoneNumber1;
         this.phoneNumber2 = phoneNumber2;
+        this.phoneNumberLabel1 = phoneNumberLabel1;
+        this.phoneNumberLabel2 = phoneNumberLabel2;
     }
 
     public Client(String name) {
@@ -91,6 +95,14 @@ public class Client implements Serializable {
 
     public void setPhoneNumber2(String phoneNumber2) { this.phoneNumber2 = phoneNumber2; }
 
+    public String getPhoneNumberLabel1() { return phoneNumberLabel1;}
+
+    public void setPhoneNumberLabel1(String phoneNumberLabel1) { this.phoneNumberLabel1 = phoneNumberLabel1;}
+
+    public String getPhoneNumberLabel2() { return phoneNumberLabel2;}
+
+    public void setPhoneNumberLabel2(String phoneNumberLabel2) { this.phoneNumberLabel2 = phoneNumberLabel2;}
+
     @Override
     public String toString() {
         return "Client{" +
@@ -101,6 +113,6 @@ public class Client implements Serializable {
                 '}';
     }
     public String toStringShort() {
-        return name + adjective + breed + phoneNumber1 + phoneNumber2;
+        return name + adjective + breed + phoneNumber1 +" "+ phoneNumber2;
     }
 }

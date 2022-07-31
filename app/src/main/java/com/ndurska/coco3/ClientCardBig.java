@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -35,6 +36,8 @@ public class ClientCardBig extends Fragment {
     private static final String ARG_BREED = "breed";
     private static final String ARG_PHONE_NUMBER_1 = "phoneNumber1";
     private static final String ARG_PHONE_NUMBER_2 = "phoneNumber2";
+    private static final String ARG_PHONE_NUMBER_lABEL_1 = "phoneNumberLabel1";
+    private static final String ARG_PHONE_NUMBER_LABEL_2 = "phoneNumberLabel2";
     private static final String ARG_OWNER_ID = "ownerID";
 
     // TODO: Rename and change types of parameters
@@ -45,6 +48,8 @@ public class ClientCardBig extends Fragment {
     private String breed;
     private String phoneNumber1;
     private String phoneNumber2;
+    private String phoneNumberLabel1;
+    private String phoneNumberLabel2;
     private int ownerID;
     private ClientCardBigListener listener;
 
@@ -56,11 +61,14 @@ public class ClientCardBig extends Fragment {
     TextView tvID;
     TextView tvPhoneNumber1;
     TextView tvPhoneNumber2;
+    TextView tvPhoneNumberLabel1;
+    TextView tvPhoneNumberLabel2;
     Button btnEdit;
     LinearLayout sameOwnerClients;
 
     interface ClientCardBigListener{
-        public void onBtnEditClicked(Client client);
+        void onBtnEditClicked(Client client);
+        void onSameOwnerClientClicked(Client client);
     }
     public ClientCardBig() {
         // Required empty public constructor
@@ -85,6 +93,8 @@ public class ClientCardBig extends Fragment {
         args.putString(ARG_BREED, client.getBreed());
         args.putString(ARG_PHONE_NUMBER_1, client.getPhoneNumber1());
         args.putString(ARG_PHONE_NUMBER_2, client.getPhoneNumber2());
+        args.putString(ARG_PHONE_NUMBER_lABEL_1, client.getPhoneNumberLabel1());
+        args.putString(ARG_PHONE_NUMBER_LABEL_2, client.getPhoneNumberLabel2());
         args.putInt(ARG_OWNER_ID, client.getOwnerId());
         fragment.setArguments(args);
 
@@ -98,7 +108,7 @@ public class ClientCardBig extends Fragment {
         if(context instanceof ClientCardBig.ClientCardBigListener){
             listener= (ClientCardBig.ClientCardBigListener) context;
         }else
-            throw new RuntimeException(context.toString()+" must implement ClientCardBigListener");
+            throw new RuntimeException(context+" must implement ClientCardBigListener");
     }
 
 
@@ -113,7 +123,8 @@ public class ClientCardBig extends Fragment {
             breed = getArguments().getString(ARG_BREED);
             phoneNumber1 = getArguments().getString(ARG_PHONE_NUMBER_1);
             phoneNumber2 = getArguments().getString(ARG_PHONE_NUMBER_2);
-            ownerID = getArguments().getInt(ARG_OWNER_ID);
+            phoneNumberLabel1 = getArguments().getString(ARG_PHONE_NUMBER_lABEL_1);
+            phoneNumberLabel2 = getArguments().getString(ARG_PHONE_NUMBER_LABEL_2);
         }
 
     }
@@ -135,6 +146,8 @@ public class ClientCardBig extends Fragment {
         tvBreed= view.findViewById(R.id.tvClientBreed);
         tvPhoneNumber1 = view.findViewById(R.id.tvPhoneNumber1);
         tvPhoneNumber2 = view.findViewById(R.id.tvPhoneNumber2);
+        tvPhoneNumberLabel1= view.findViewById(R.id.tvPhoneNumberLabel1);
+        tvPhoneNumberLabel2= view.findViewById(R.id.tvPhoneNumberLabel2);
         tvID =  view.findViewById(R.id.tvClientID);
         btnEdit = view.findViewById(R.id.btnClientEdit);
         sameOwnerClients = view.findViewById(R.id.llSameOwnerClients);
@@ -146,27 +159,46 @@ public class ClientCardBig extends Fragment {
             tvBreed.setText(breed);
             tvPhoneNumber1.setText(phoneNumber1);
             tvPhoneNumber2.setText(phoneNumber2);
+            if(phoneNumberLabel1.length()==0)
+                tvPhoneNumberLabel1.setText("Telefon:");
+            else
+                tvPhoneNumberLabel1.setText(phoneNumberLabel1);
+            if(phoneNumberLabel2.length()==0)
+                tvPhoneNumberLabel2.setText("Telefon:");
+            else
+                tvPhoneNumberLabel2.setText(phoneNumberLabel2);
             tvID.setText(String.valueOf(ID));
 
             DataBaseHelper dataBaseHelper = new DataBaseHelper(getActivity());
-            Client c =  dataBaseHelper.getClient(ID);
+            Client c =  (Client) getArguments().getSerializable("client");
 
+            List<Client> sameOwnerClientList = dataBaseHelper.getSameOwnerClients(c);
 
+            if (sameOwnerClientList.size()>0) {
+                TextView tv= new TextView(getActivity());
+                tv.setText("od: ");
+                sameOwnerClients.addView(tv);
+            }
+            Iterator<Client> iterator = sameOwnerClientList.iterator();
 
-            for (Client client : dataBaseHelper.getSameOwnerClients(c)){
+            for (Client client : sameOwnerClientList){
                 TextView clientName = new TextView(getActivity());
                 clientName.setText(client.getName());
                 clientName.setTextSize(20);
                 clientName.setPadding(5,5,5,5);
+                clientName.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        listener.onSameOwnerClientClicked(client);
+                    }
+                });
 
                 sameOwnerClients.addView(clientName);
 
-
             }
 
-
         }catch (Exception e){
-            Toast.makeText(getActivity(),"Blad w onViewCreated",Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(),"Błąd w onViewCreated",Toast.LENGTH_LONG).show();
         }
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
