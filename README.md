@@ -13,6 +13,7 @@ This project is simple database for groomers to keep track of their clients. My 
 Project is created with:
 Java 18
 XML 1.0
+Android Studio Chipmunk 2021.2.1
 
 ## Features
 - Stores information about (dog) clients
