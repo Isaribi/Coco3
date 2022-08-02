@@ -12,10 +12,10 @@ App is designed for tablets. It will not look as intended on small screen smartp
 	
 ## Technologies
 Project is created with:
-Java 18
-XML 1.0
-Android Studio Chipmunk 2021.2.1
-Android SDK 33
+Java 18,
+XML 1.0,
+Android Studio Chipmunk 2021.2.1,
+Android SDK 33.
 
 ## Features
 - Stores information about (dog) clients
