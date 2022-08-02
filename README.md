@@ -8,6 +8,7 @@
 
 ## General info
 This project is simple database for groomers to keep track of their clients. My plan for the future is to include a calendar of appointments. 
+App is designed for tablets. It will not look as intended on small screen smartphones in its current state.
 	
 ## Technologies
 Project is created with:
